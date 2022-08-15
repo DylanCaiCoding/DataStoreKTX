@@ -1,0 +1,5 @@
+rootProject.name = "DataStoreKTX"
+include ':sample'
+include ':datastore-ktx'
+include ':datastore-rxjava2'
+include ':datastore-rxjava3'
