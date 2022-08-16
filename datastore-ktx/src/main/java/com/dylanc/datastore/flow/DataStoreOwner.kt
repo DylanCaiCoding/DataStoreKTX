@@ -8,7 +8,6 @@ import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -54,9 +53,10 @@ class DataStoreProperty<V>(
   private val default: V,
   private val key: (String) -> Preferences.Key<V>
 ) : ReadOnlyProperty<DataStoreOwner, DataStoreFlow<V>> {
-  private var cache: V? = null
+  private var flow: DataStoreFlow<V>? = null
 
-  override fun getValue(thisRef: DataStoreOwner, property: KProperty<*>) = object : DataStoreFlow<V> {
+  override fun getValue(thisRef: DataStoreOwner, property: KProperty<*>) = flow ?: object : DataStoreFlow<V> {
+    private var cache: V? = null
 
     override fun setValue(block: suspend (V) -> V): Flow<Preferences> =
       flow {
@@ -71,15 +71,16 @@ class DataStoreProperty<V>(
       thisRef.dataStore.data.map { preferences ->
         cache ?: (preferences[key(property.name)] ?: default).also { cache = it }
       }
-  }
+  }.also { flow = it }
 }
 
 class DataStoreNullableProperty<V>(
   private val key: (String) -> Preferences.Key<V>
 ) : ReadOnlyProperty<DataStoreOwner, DataStoreFlow<V?>> {
-  private var cache: V? = null
+  private var flow: DataStoreFlow<V?>? = null
 
-  override fun getValue(thisRef: DataStoreOwner, property: KProperty<*>) = object : DataStoreFlow<V?> {
+  override fun getValue(thisRef: DataStoreOwner, property: KProperty<*>) = flow ?: object : DataStoreFlow<V?> {
+    private var cache: V? = null
 
     override fun setValue(block: suspend (V?) -> V?): Flow<Preferences> =
       flow {
@@ -98,5 +99,5 @@ class DataStoreNullableProperty<V>(
       thisRef.dataStore.data.map { preferences ->
         cache ?: preferences[key(property.name)].also { cache = it }
       }
-  }
+  }.also { flow = it }
 }
