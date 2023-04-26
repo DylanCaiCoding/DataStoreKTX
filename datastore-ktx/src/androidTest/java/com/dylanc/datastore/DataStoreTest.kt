@@ -15,30 +15,24 @@
  *
  */
 
-package com.dylanc.datastore.flow
+package com.dylanc.datastore
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class DataStoreTest : DataStoreOwner {
-  private val i1 by intPreferences()
+
+  private val i1 by intPreference()
 
   @Test
-  fun testInt1() {
-//    =
-//    i1.getValue().collect {
-//      Assert.assertEquals(0, it)
-//    }
-//    i1.setValue(6).collect()
-//    i1.getValue().collect {
-//      Assert.assertEquals(6, it)
-//    }
+  fun testInt1() = runTest {
+    Assert.assertEquals(null, i1.get())
+    i1.set(1)
+    Assert.assertEquals(1, i1.get())
   }
 }

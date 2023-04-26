@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022. Dylan Cai
+ * Copyright (c) 2023. Dylan Cai
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,10 @@
 
 @file:Suppress("unused")
 
-package com.dylanc.datastore.flow
+package com.dylanc.datastore
 
 import android.app.Application
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.startup.Initializer
 
 /**
@@ -31,17 +28,8 @@ import androidx.startup.Initializer
 class DataStoreInitializer : Initializer<Unit> {
 
   override fun create(context: Context) {
-    application = context as Application
-    if (DataStoreOwner.default == null) {
-      DataStoreOwner.default = context.dataStore
-    }
+    DataStoreOwner.application = context as Application
   }
 
   override fun dependencies() = emptyList<Class<Initializer<*>>>()
-
-  private val Context.dataStore by preferencesDataStore("default")
-
-  companion object {
-    internal lateinit var application: Application
-  }
 }

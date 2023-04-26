@@ -27,15 +27,16 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
-        freeCompilerArgs += ['-module-name', "datastore-flow"]
+        freeCompilerArgs += ['-module-name', "datastore-ktx"]
+        freeCompilerArgs += "-Xcontext-receivers"
     }
 }
 
 dependencies {
     api "androidx.datastore:datastore-preferences:$datastoreVersion"
     implementation "androidx.startup:startup-runtime:$startupVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
-    testImplementation "org.jetbrains.kotlin:kotlin-coroutines-test:$kotlinCoroutinesTestVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleLiveDataVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 }

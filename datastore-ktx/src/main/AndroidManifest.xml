@@ -10,7 +10,7 @@
       android:exported="false"
       tools:node="merge">
       <meta-data
-        android:name="com.dylanc.datastore.flow.DataStoreInitializer"
+        android:name="com.dylanc.datastore.DataStoreInitializer"
         android:value="androidx.startup" />
     </provider>
   </application>
