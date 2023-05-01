@@ -20,6 +20,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.rxjava3.RxDataStore
 import com.dylanc.datastore.DataStoreOwner
+import com.dylanc.datastore.IDataStoreOwner
+import com.dylanc.datastore.rxjava3.IRxDataStoreOwner.Companion.toRxDataStore
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
@@ -28,7 +30,12 @@ import kotlinx.coroutines.rx3.asCoroutineDispatcher
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-interface RxDataStoreOwner : DataStoreOwner {
+open class RxDataStoreOwner(name: String) : DataStoreOwner(name), IRxDataStoreOwner {
+  @Suppress("LeakingThis")
+  override val rxDataStore: RxDataStore<Preferences> by dataStore.toRxDataStore()
+}
+
+interface IRxDataStoreOwner : IDataStoreOwner {
 
   val rxDataStore: RxDataStore<Preferences>
 
@@ -54,14 +61,14 @@ interface RxDataStoreOwner : DataStoreOwner {
     RxPreferenceProperty(this, ::stringSetPreferencesKey, default ?: emptySet())
 
   class RxPreferenceProperty<V : Any>(
-    private val owner: RxDataStoreOwner,
+    private val owner: IRxDataStoreOwner,
     private val key: (String) -> Preferences.Key<V>,
     private val default: V
-  ) : ReadOnlyProperty<DataStoreOwner, RxDataStorePreference<V>> {
+  ) : ReadOnlyProperty<IDataStoreOwner, RxDataStorePreference<V>> {
     private var cache: RxDataStorePreference<V>? = null
 
-    override fun getValue(thisRef: DataStoreOwner, property: KProperty<*>): RxDataStorePreference<V> =
-      cache ?: RxDataStorePreferenceImpl(thisRef.dataStore, key(property.name), default, owner.rxDataStore).also { cache = it }
+    override fun getValue(thisRef: IDataStoreOwner, property: KProperty<*>): RxDataStorePreference<V> =
+      cache ?: RxDataStorePreference(thisRef.dataStore , key(property.name), default, owner.rxDataStore ).also { cache = it }
   }
 
   companion object {

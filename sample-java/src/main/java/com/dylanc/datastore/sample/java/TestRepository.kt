@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Dylan Cai
+ * Copyright (c) 2022. Dylan Cai
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,24 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 
-@file:Suppress("unused")
+package com.dylanc.datastore.sample.java
 
-package com.dylanc.datastore
+import com.dylanc.datastore.rxjava2.RxDataStoreOwner
 
-import android.app.Application
-import android.content.Context
-import androidx.startup.Initializer
+object TestRepository : RxDataStoreOwner("test") {
+  @JvmStatic
+  val counter by intPreference()
+}
 
-/**
- * @author Dylan Cai
- */
-class DataStoreInitializer : Initializer<Unit> {
-
-  override fun create(context: Context) {
-    IDataStoreOwner.application = context as Application
-  }
-
-  override fun dependencies() = emptyList<Class<Initializer<*>>>()
+object TestRepository2 : RxDataStoreOwner("test2") {
+  @JvmStatic
+  val counter by intPreference()
 }

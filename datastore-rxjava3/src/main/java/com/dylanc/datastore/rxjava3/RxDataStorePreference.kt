@@ -22,35 +22,26 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.rxjava3.RxDataStore
 import com.dylanc.datastore.DataStorePreference
-import com.dylanc.datastore.DataStorePreferenceImpl
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 operator fun <V : Any> Preferences.get(preference: RxDataStorePreference<V>) = this[preference.key]
 
-interface RxDataStorePreference<V : Any> : DataStorePreference<V> {
-  fun asFlowable(): Flowable<V>
-
-  fun getAsync(): Single<V> = asFlowable().first(default!!)
-
-  fun setAsync(block: V.(preferences: Preferences) -> V?): Single<Preferences>
-
-  fun setAsync(value: V?): Single<Preferences> = setAsync { value }
-}
-
 @OptIn(ExperimentalCoroutinesApi::class)
-class RxDataStorePreferenceImpl<V : Any>(
+class RxDataStorePreference<V : Any>(
   dataStore: DataStore<Preferences>,
   key: Preferences.Key<V>,
   override val default: V,
   private val rxDataStore: RxDataStore<Preferences>
-) : DataStorePreferenceImpl<V>(dataStore, key, default), RxDataStorePreference<V> {
+) : DataStorePreference<V>(dataStore, key, default) {
 
-  override fun asFlowable(): Flowable<V> =
+  fun asFlowable(): Flowable<V> =
     rxDataStore.data().map { it[key] ?: default }
 
-  override fun setAsync(block: V.(Preferences) -> V?) =
+  fun getAsync(): Single<V> = asFlowable().first(default)
+
+  fun setAsync(block: V.(Preferences) -> V?) =
     rxDataStore.updateDataAsync {
       val preferences = it.toMutablePreferences()
       val value = block(preferences[key] ?: default, preferences)
@@ -61,4 +52,6 @@ class RxDataStorePreferenceImpl<V : Any>(
       }
       Single.just(preferences)
     }
+
+  fun setAsync(value: V?): Single<Preferences> = setAsync { value }
 }

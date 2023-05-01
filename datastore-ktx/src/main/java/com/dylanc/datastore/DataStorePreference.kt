@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("unused")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.dylanc.datastore
 
@@ -29,31 +29,13 @@ import kotlinx.coroutines.flow.map
 
 operator fun <V> Preferences.get(preference: DataStorePreference<V>) = this[preference.key]
 
-interface DataStorePreference<V> {
-  val key: Preferences.Key<V>
-
-  val default: V?
-
-  fun asFlow(): Flow<V?>
-
-  fun asLiveData(): LiveData<V?> = asFlow().asLiveData()
-
-  suspend fun get(): V? = asFlow().first()
-
-  suspend fun getOrDefault(): V = get() ?: throw IllegalStateException("No default value")
-
-  suspend fun set(block: suspend V?.(Preferences) -> V?): Preferences
-
-  suspend fun set(value: V?): Preferences = set { value }
-}
-
-open class DataStorePreferenceImpl<V>(
+open class DataStorePreference<V>(
   private val dataStore: DataStore<Preferences>,
-  override val key: Preferences.Key<V>,
-  override val default: V?
-) : DataStorePreference<V> {
+  val key: Preferences.Key<V>,
+  open val default: V?
+) {
 
-  override suspend fun set(block: suspend V?.(Preferences) -> V?): Preferences =
+  suspend fun set(block: suspend V?.(Preferences) -> V?): Preferences =
     dataStore.edit { preferences ->
       val value = block(preferences[key] ?: default, preferences)
       if (value == null) {
@@ -63,6 +45,14 @@ open class DataStorePreferenceImpl<V>(
       }
     }
 
-  override fun asFlow(): Flow<V?> =
+  suspend fun set(value: V?): Preferences = set { value }
+
+  fun asFlow(): Flow<V?> =
     dataStore.data.map { it[key] ?: default }
+
+  fun asLiveData(): LiveData<V?> = asFlow().asLiveData()
+
+  suspend fun get(): V? = asFlow().first()
+
+  suspend fun getOrDefault(): V = get() ?: throw IllegalStateException("No default value")
 }

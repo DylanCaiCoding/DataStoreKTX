@@ -28,12 +28,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += ['-module-name', "datastore-rxjava3"]
-        freeCompilerArgs += "-Xcontext-receivers"
     }
 }
 
 dependencies {
     api "androidx.datastore:datastore-preferences-rxjava3:$datastoreVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-rx3:$kotlinCoroutinesVersion"
     implementation project(path: ':datastore-ktx')
     testImplementation 'junit:junit:4.13.2'

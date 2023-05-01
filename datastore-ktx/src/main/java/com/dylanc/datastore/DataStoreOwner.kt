@@ -24,49 +24,51 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlin.properties.ReadOnlyProperty
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-interface DataStoreOwner {
+open class DataStoreOwner(name: String) : IDataStoreOwner {
+  private val Context.dataStore by preferencesDataStore(name)
+  override val dataStore get() = context.dataStore
+}
+
+interface IDataStoreOwner {
   val context: Context get() = application
 
-  val dataStore: DataStore<Preferences> get() = context.default()
+  val dataStore: DataStore<Preferences>
 
-  fun intPreference(default: Int? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<Int>> =
+  fun intPreference(default: Int? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<Int>> =
     PreferenceProperty(::intPreferencesKey, default)
 
-  fun doublePreference(default: Double? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<Double>> =
+  fun doublePreference(default: Double? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<Double>> =
     PreferenceProperty(::doublePreferencesKey, default)
 
-  fun longPreference(default: Long? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<Long>> =
+  fun longPreference(default: Long? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<Long>> =
     PreferenceProperty(::longPreferencesKey, default)
 
-  fun floatPreference(default: Float? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<Float>> =
+  fun floatPreference(default: Float? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<Float>> =
     PreferenceProperty(::floatPreferencesKey, default)
 
-  fun booleanPreference(default: Boolean? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<Boolean>> =
+  fun booleanPreference(default: Boolean? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<Boolean>> =
     PreferenceProperty(::booleanPreferencesKey, default)
 
-  fun stringPreference(default: String? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<String>> =
+  fun stringPreference(default: String? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<String>> =
     PreferenceProperty(::stringPreferencesKey, default)
 
-  fun stringSetPreference(default: Set<String>? = null): ReadOnlyProperty<DataStoreOwner, DataStorePreference<Set<String>>> =
+  fun stringSetPreference(default: Set<String>? = null): ReadOnlyProperty<IDataStoreOwner, DataStorePreference<Set<String>>> =
     PreferenceProperty(::stringSetPreferencesKey, default)
 
   class PreferenceProperty<V>(
     private val key: (String) -> Preferences.Key<V>,
     private val default: V? = null,
-  ) : ReadOnlyProperty<DataStoreOwner, DataStorePreference<V>> {
+  ) : ReadOnlyProperty<IDataStoreOwner, DataStorePreference<V>> {
     private var cache: DataStorePreference<V>? = null
 
-    override fun getValue(thisRef: DataStoreOwner, property: KProperty<*>): DataStorePreference<V> =
-      cache ?: DataStorePreferenceImpl(thisRef.dataStore, key(property.name), default).also { cache = it }
+    override fun getValue(thisRef: IDataStoreOwner, property: KProperty<*>): DataStorePreference<V> =
+      cache ?: DataStorePreference(thisRef.dataStore, key(property.name), default).also { cache = it }
   }
 
   companion object {
-    private val Context.defaultDataStore by preferencesDataStore("default")
     internal lateinit var application: Application
-
-    @JvmStatic
-    var default: Context.() -> DataStore<Preferences> = { defaultDataStore }
   }
 }

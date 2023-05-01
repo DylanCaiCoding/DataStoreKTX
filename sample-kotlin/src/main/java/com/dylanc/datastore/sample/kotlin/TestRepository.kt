@@ -15,13 +15,15 @@
  *
  */
 
-package com.dylanc.datastore.sample
+package com.dylanc.datastore.sample.kotlin
 
-import com.dylanc.datastore.flow.DataStoreOwner
-import com.dylanc.datastore.flow.intPreferences
-import com.dylanc.datastore.flow.stringPreferences
+import com.dylanc.datastore.DataStoreOwner
+import com.dylanc.datastore.rxjava3.RxDataStoreOwner
 
-object DataRepository : DataStoreOwner {
-  val id by intPreferences()
-  val username by stringPreferences()
+object TestRepository : DataStoreOwner("test") {
+  val counter by intPreference()
+}
+
+object TestRepository2 : RxDataStoreOwner("test2") {
+  val counter by intPreference()
 }
