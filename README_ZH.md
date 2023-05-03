@@ -2,7 +2,7 @@
 
 [English](README.md) | 中文
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/MMKV-KTX.svg)](https://www.jitpack.io/#DylanCaiCoding/DataStoreKTX-KTX)
+[![](https://www.jitpack.io/v/DylanCaiCoding/DataStoreKTX.svg)](https://www.jitpack.io/#DylanCaiCoding/DataStoreKTX-KTX)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/DataStoreKTX/blob/master/LICENSE)
 
 [Jetpack DataStore](https://developer.android.com/topic/libraries/architecture/datastore) 是一种数据存储解决方案，由于使用了 Kotlin 协程或者 RxJava 以异步、一致的事务方式存储数据，用法相较于其它存储方案 (SharedPreferences、MMKV) 会更加特别，所以目前网上都没有什么比较好的 DataStore 封装。个人也做了很多摸索和尝试，终于封装出了一套非常满意的用法，希望能帮助到大家。
