@@ -1,8 +1,8 @@
-#DataStoreKTX
+# DataStoreKTX
 
 English | [中文](README_ZH.md)
 
-[![](https://www.jitpack.io/v/DylanCaiCoding/MMKV-KTX.svg)](https://www.jitpack.io/#DylanCaiCoding/DataStoreKTX-KTX)
+[![](https://www.jitpack.io/v/DylanCaiCoding/DataStoreKTX.svg)](https://www.jitpack.io/#DylanCaiCoding/DataStoreKTX-KTX)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/DylanCaiCoding/DataStoreKTX/blob/master/LICENSE)
 
 [Jetpack DataStore](https://developer.android.com/topic/libraries/architecture/datastore) is a data storage solution that uses Kotlin Coroutines or RxJava to store data in an asynchronous manner with consistent transaction methods. Its usage is different from other storage solutions such as SharedPreferences and MMKV, making it more special. Therefore, there are not many good DataStore encapsulations available online. I have done a lot of exploration and attempts and finally developed a very satisfactory set of usage methods, which I hope can help everyone.
