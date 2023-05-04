@@ -9,10 +9,10 @@ English | [中文](README_ZH.md)
 
 ## Features
 
-- No need to create DataStore or RxDataStore objects;
+- No need to create DataStore, RxDataStore, or Preferences.Key objects;
 - Supports both Kotlin Coroutines and RxJava usage;
 - Uses property names as key names, eliminating the need to declare a large number of key name constants;
-- Ensures type safety and avoids exceptions caused by inconsistent types or key values.
+- Ensures type safety and avoids exceptions caused by inconsistent types or key name.
 
 ## DataStore vs MMKV
 
@@ -137,7 +137,7 @@ The new `setAsync()` function call of this property writes the data by executing
 
 ```java
 SettingsRepository.getCounter().setAsync(100);
-    SettingsRepository.getCounter().setAsync((counter, prefsIn) -> counter + 1);
+SettingsRepository.getCounter().setAsync((counter, prefsIn) -> counter + 1);
 ```
 
 It can also be used as a `Flowable`. In this way, a notification callback is made each time the data changes, which can be used to update UI or to write streaming code. For example:
