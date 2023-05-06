@@ -9,10 +9,10 @@
 
 ## Features
 
-- 无需创建 DataStore 或 RxDataStore 对象；
+- 无需创建 DataStore、RxDataStore、Preferences.Key 对象；
 - 支持 Kotlin 协程和 RxJava 用法；
 - 用属性名作为键名，无需声明大量的键名常量；
-- 可以确保类型安全，避免类型或者 key 值不一致导致的异常；
+- 可以确保类型安全，避免类型或者键名不一致导致的异常；
 
 ## DataStore VS MMKV
 
@@ -134,10 +134,10 @@ SettingsRepository.getCounter().getAsync()
 
 ```java
 SettingsRepository.getCounter().setAsync(100);
-    SettingsRepository.getCounter().setAsync((counter, prefsIn) -> counter + 1);
+SettingsRepository.getCounter().setAsync((counter, prefsIn) -> counter + 1);
 ```
 
-也可以将作为 `Flowable` 使用，这样每当数据发生变化都会有通知回调，可以更新 UI 或流式编程。比如：
+也可以作为 `Flowable` 使用，这样每当数据发生变化都会有通知回调，可以更新 UI 或流式编程。比如：
 
 ```java
 SettingsRepository.getCounter().asFlowable()
