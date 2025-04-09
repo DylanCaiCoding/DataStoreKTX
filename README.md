@@ -163,6 +163,7 @@ Coroutine and RxJava usage can be used together, as long as it is the same prope
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | Decoupling the title bar or view of loading, loading failure, no data, etc., supporting two-line code integration into the base class |
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | The most comprehensive ViewBinding tool |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX) | The most flexible and easy-to-use MMKV tool |
+| [MultiBaseUrls](https://github.com/DylanCaiCoding/MultiBaseUrls) | Use annotation to allow Retrofit to support multiple baseUrl and dynamically change baseUrl |
 | [Tracker](https://github.com/DylanCaiCoding/Tracker) | A lightweight tracking framework based on Buzzvideo's view tree tracking idea |
 
 ## License
