@@ -160,6 +160,7 @@ SettingsRepository.getCounter().asFlowable()
 | [LoadingStateView](https://github.com/DylanCaiCoding/LoadingStateView) | 深度解耦标题栏或加载中、加载失败、无数据等视图，支持两行代码集成到基类 |
 | [ViewBindingKTX](https://github.com/DylanCaiCoding/ViewBindingKTX) | 最全面的 ViewBinding 工具                 |
 | [MMKV-KTX](https://github.com/DylanCaiCoding/MMKV-KTX)       | 最灵活易用的 MMKV 工具                      |
+| [MultiBaseUrls](https://github.com/DylanCaiCoding/MultiBaseUrls) | 用注解让 Retrofit 同时支持多个 baseUrl 以及动态改变 baseUrl |
 | [Tracker](https://github.com/DylanCaiCoding/Tracker)         | 基于西瓜视频的视图树埋点思路实现的轻量级埋点框架            |
 
 ## License
